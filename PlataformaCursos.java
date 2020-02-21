@@ -131,16 +131,16 @@ public class PlataformaCursos
      */
     private Curso obtenerCurso(String lineaCurso) {
         String[] aux = lineaCurso.split(SEPARADOR);
-        for (String str: aux) {
-            str.replace(ESPACIO, "");
+        for (int i = 0; i < aux.length; i++) {
+            str = str.trim();
         }
         System.out.println(aux[2].toUpperCase().substring(1));
         String[] fechas = aux[1].split("/");
         for (String str: fechas) {
             str.replace(ESPACIO, "");
         }
-        // Nivel nivel = Nivel.valueOf(aux[2].toUpperCase()); 
-        Curso c = new Curso(aux[0], LocalDate.of(Integer.parseInt(fechas[2]), Integer.parseInt(fechas[1]), Integer.parseInt(fechas[1])) , Nivel.PRINCIPIANTE);
+        Nivel nivel = Nivel.valueOf(aux[2].toUpperCase()); 
+        Curso c = new Curso(aux[0], LocalDate.of(Integer.parseInt(fechas[2]), Integer.parseInt(fechas[1]), Integer.parseInt(fechas[1])) , nivel);
         return c;
     }
 
