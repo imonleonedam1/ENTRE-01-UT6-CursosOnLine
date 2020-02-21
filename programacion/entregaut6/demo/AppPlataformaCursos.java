@@ -1,3 +1,5 @@
+package programacion.entregaut6.demo;
+import programacion.entregaut6.interfaz.*;
 /**
  *  Punto de entrada a la aplicación
  *  

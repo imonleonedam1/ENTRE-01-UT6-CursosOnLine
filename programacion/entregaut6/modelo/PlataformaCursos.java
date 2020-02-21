@@ -1,3 +1,4 @@
+package programacion.entregaut6.modelo;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -96,7 +97,6 @@ public class PlataformaCursos
      * Mostrar la plataforma
      */
     public void escribir() {
-
         System.out.println(this.toString());
     }
 
@@ -116,7 +116,6 @@ public class PlataformaCursos
             Curso curso = obtenerCurso(lineaCurso.substring(p + 1));
             this.addCurso(categoria, curso);
         }
-
     }
 
     /**
@@ -132,15 +131,12 @@ public class PlataformaCursos
     private Curso obtenerCurso(String lineaCurso) {
         String[] aux = lineaCurso.split(SEPARADOR);
         for (int i = 0; i < aux.length; i++) {
-            str = str.trim();
+            aux[i] = aux[i].trim();
         }
-        System.out.println(aux[2].toUpperCase().substring(1));
-        String[] fechas = aux[1].split("/");
-        for (String str: fechas) {
-            str.replace(ESPACIO, "");
-        }
+        DateTimeFormatter formateador  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fecha = LocalDate.parse(aux[1], formateador);
         Nivel nivel = Nivel.valueOf(aux[2].toUpperCase()); 
-        Curso c = new Curso(aux[0], LocalDate.of(Integer.parseInt(fechas[2]), Integer.parseInt(fechas[1]), Integer.parseInt(fechas[1])) , nivel);
+        Curso c = new Curso(aux[0], fecha, nivel);
         return c;
     }
 
@@ -166,18 +162,21 @@ public class PlataformaCursos
      */
 
     public TreeSet<String> borrarCursosDe(String categoria, Nivel nivel) {
-        Set<Map.Entry<String, ArrayList<Curso>>> conjuntoEntradas = plataforma.entrySet();
-        TreeSet<String> nombres = new TreeSet<>();
-        for (Map.Entry<String, ArrayList<Curso>> entrada: conjuntoEntradas) {
-            ArrayList<Curso> aux = plataforma.get(categoria);
-            for (Curso c: aux) {
-                if (c.getNivel().equals(nivel)) {
-                    nombres.add(c.getNombre());
-                    aux.remove(c);
-                }
+        categoria = categoria.toUpperCase();
+        ArrayList<Curso> array = plataforma.get(categoria);
+        TreeSet<String> aux = new TreeSet<>();
+        // for (Curso c: array) {
+            // if (c.getNivel().equals(nivel)) {
+                // array.remove(c);
+            // }
+        // }
+        for (int i = 0; i < array.size(); i++) {
+            if (array.get(i).getNivel().equals(nivel)) {
+                aux.add(array.get(i).getNombre());
+                array.remove(i);
             }
         }
-        return nombres;
+        return aux;
     }
 
     /**
