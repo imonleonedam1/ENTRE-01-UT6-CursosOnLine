@@ -107,7 +107,6 @@ public class PlataformaCursos
      *  
      */
     public void leerDeFichero() {
-
         Scanner sc = new Scanner(
                 this.getClass().getResourceAsStream("/cursos.csv"));
         while (sc.hasNextLine())  {
@@ -132,12 +131,16 @@ public class PlataformaCursos
      */
     private Curso obtenerCurso(String lineaCurso) {
         String[] aux = lineaCurso.split(SEPARADOR);
-        String[] fechas = aux[2].split("/");
         for (String str: aux) {
-            str.trim();
+            str.replace(ESPACIO, "");
         }
-        Nivel nivel = Nivel.valueOf(aux[2]);
-        Curso c = new Curso(aux[0], LocalDate.of(Integer.parseInt(fechas[2]), Integer.parseInt(fechas[1]), Integer.parseInt(fechas[1])) , nivel);
+        System.out.println(aux[2].toUpperCase().substring(1));
+        String[] fechas = aux[1].split("/");
+        for (String str: fechas) {
+            str.replace(ESPACIO, "");
+        }
+        // Nivel nivel = Nivel.valueOf(aux[2].toUpperCase()); 
+        Curso c = new Curso(aux[0], LocalDate.of(Integer.parseInt(fechas[2]), Integer.parseInt(fechas[1]), Integer.parseInt(fechas[1])) , Nivel.PRINCIPIANTE);
         return c;
     }
 
@@ -183,8 +186,19 @@ public class PlataformaCursos
      */
 
     public String cursoMasAntiguo() {
-        
-        return "";
+        LocalDate aux = LocalDate.MAX;
+        Set<Map.Entry<String, ArrayList<Curso>>> conjuntoEntradas = plataforma.entrySet();
+        for (Map.Entry<String, ArrayList<Curso>> entrada: conjuntoEntradas) {
+            String clave = entrada.getKey();
+            ArrayList<Curso> array = plataforma.get(clave);
+            for (Curso c: array) {
+                LocalDate fecha = c.getFecha();
+                if (fecha.compareTo(aux) < 0) {
+                    aux = fecha;
+                }
+            }
+        }
+        return String.valueOf(aux);
     }
 
     /**
